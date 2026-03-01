@@ -4,6 +4,7 @@ import { BookOpen, GraduationCap, ChevronRight } from 'lucide-react';
 import TutorLogin from './pages/TutorLogin';
 import StudentLogin from './pages/StudentLogin';
 import TutorDashboard from './pages/TutorDashboard';
+import TutorStudentDetail from './pages/TutorStudentDetail';
 
 function LandingPage() {
   return (
@@ -62,6 +63,7 @@ function App() {
         <Route path="/login/student" element={<StudentLogin />} />
         {/* Placeholder dashboard routes for now */}
         <Route path="/tutor/dashboard" element={<TutorDashboard />} />
+        <Route path="/tutor/students/:id" element={<TutorStudentDetail />} />
         <Route path="/student/dashboard" element={<div className="mobile-container"><h2 style={{ color: 'white' }}>Student Dashboard</h2></div>} />
       </Routes>
     </BrowserRouter>

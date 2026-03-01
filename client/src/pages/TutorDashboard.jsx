@@ -141,8 +141,11 @@ export default function TutorDashboard() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingBottom: '80px' }}>
                     {students.map(student => (
                         <div key={student.id} className="glass-panel" style={{ padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <div>
-                                <h4 style={{ fontSize: '16px', margin: '0 0 4px 0' }}>{student.name}</h4>
+                            <div
+                                style={{ cursor: 'pointer', flex: 1 }}
+                                onClick={() => navigate(`/tutor/students/${student.id}`)}
+                            >
+                                <h4 style={{ fontSize: '18px', margin: '0 0 4px 0', color: 'var(--c-text-primary)' }}>{student.name}</h4>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                                     <span style={{ fontSize: '12px', color: 'var(--c-text-secondary)' }}>Login Code:</span>
                                     <span style={{
@@ -159,7 +162,7 @@ export default function TutorDashboard() {
                                 </div>
                             </div>
                             <button
-                                onClick={() => handleCopyCode(student.unique_code, student.id)}
+                                onClick={(e) => { e.stopPropagation(); handleCopyCode(student.unique_code, student.id); }}
                                 style={{
                                     background: 'rgba(255,255,255,0.1)',
                                     border: 'none',
