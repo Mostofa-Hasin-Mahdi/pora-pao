@@ -1,4 +1,5 @@
 # 🎯 Pora Pao - Smart Tutor Dashboard
+<img width="1529" height="430" alt="image" src="https://github.com/user-attachments/assets/cf1da77a-2d1a-44ed-9fe2-419123c1fa98" />
 
 A modern, mobile-first, completely serverless web application built with React, Vite, and Supabase that connects private tutors with their students through an intuitive platform.
 
@@ -13,22 +14,27 @@ A modern, mobile-first, completely serverless web application built with React, 
 ## 🌟 Key Features
 
 ### 👥 **Dual User System**
+- <img width="869" height="516" alt="image" src="https://github.com/user-attachments/assets/fdf31230-3fe9-4ba1-9a52-8bc65aaf872e" />
 - **Tutors**: Manage students, schedule routines, assign homework and quizzes, grade assignments, and monitor analytics.
 - **Students**: View routines, check pending tasks, and track their academic performance securely.
 
 ### 📅 **Advanced Scheduling & Routine**
+- <img width="440" height="754" alt="image" src="https://github.com/user-attachments/assets/534173da-ac0e-4251-abc9-2fe34158b320" />
 - **Mini Calendar**: Visually distinct calendar highlighting routine teaching days and rescheduled dates.
 - **Reschedule Alerts**: Students immediately see if a session has been moved.
 
 ### 📝 **Assignment & Grading System**
+- <img width="640" height="553" alt="image" src="https://github.com/user-attachments/assets/69a5cc55-2193-4383-82ad-a9abd05641b7" /><img width="621" height="752" alt="image" src="https://github.com/user-attachments/assets/56f183e5-a16c-4d6e-b24a-0fecbf8b8e3b" />
 - **Centralized Tasks**: Assign homework and quizzes categorized by customizable subjects.
 - **Automated Grading Logs**: Grade assignments with a click and automatically generate comprehensive history logs.
 
 ### 📊 **Deep Analytics & Performance**
+- <img width="569" height="889" alt="image" src="https://github.com/user-attachments/assets/6612e534-86c3-4e9e-8832-95c77a495529" />
 - **Visual Progress**: Auto-generated Bar Charts, Area Charts, and Progress Timelines to map student strengths and historical quiz averages.
 - **Subject Mastery**: Quickly identify which subjects need more attention.
 
 ### 🔒 **Code-Based Security**
+- <img width="632" height="172" alt="image" src="https://github.com/user-attachments/assets/9245bb1e-84ec-4757-8321-dfbade4233fe" />
 - **Passwordless Entry for Students**: Seamless login using only a 6-digit cryptographic code provided securely by the tutor. No emails required!
 - **Row Level Security**: Fully secured database ensuring tutors and students only access their own authorized data.
 
