@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Users, UserPlus, LogOut, Copy, Check, Trash2, Edit2 } from 'lucide-react';
+import { Users, UserPlus, LogOut, Copy, Check, Trash2, Edit2, Settings } from 'lucide-react';
 
 export default function TutorDashboard() {
     const navigate = useNavigate();
@@ -128,12 +128,22 @@ export default function TutorDashboard() {
         <div className="mobile-container">
             <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                 <h2 style={{ fontSize: '24px', margin: 0 }}>Dashboard</h2>
-                <button
-                    onClick={handleLogout}
-                    style={{ background: 'transparent', border: 'none', color: 'var(--c-text-secondary)', cursor: 'pointer' }}
-                >
-                    <LogOut size={24} />
-                </button>
+                <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                    <button
+                        onClick={() => navigate('/tutor/settings')}
+                        style={{ background: 'transparent', border: 'none', color: 'var(--c-text-secondary)', cursor: 'pointer' }}
+                        title="Settings"
+                    >
+                        <Settings size={24} />
+                    </button>
+                    <button
+                        onClick={handleLogout}
+                        style={{ background: 'transparent', border: 'none', color: 'var(--c-text-secondary)', cursor: 'pointer' }}
+                        title="Logout"
+                    >
+                        <LogOut size={24} />
+                    </button>
+                </div>
             </header>
 
             {/* Add Student floating card */}

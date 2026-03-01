@@ -10,6 +10,8 @@ import Performance from './pages/Performance';
 import HistoryPage from './pages/HistoryPage';
 import LandingPage from './pages/LandingPage';
 
+import TutorSettings from './pages/TutorSettings';
+
 function App() {
   return (
     <BrowserRouter>
@@ -19,6 +21,7 @@ function App() {
         <Route path="/login/student" element={<StudentLogin />} />
         {/* Tutor Routes */}
         <Route path="/tutor/dashboard" element={<TutorDashboard />} />
+        <Route path="/tutor/settings" element={<TutorSettings />} />
         <Route path="/tutor/students/:id" element={<TutorStudentDetail />} />
         <Route path="/tutor/students/:id/performance" element={<Performance />} />
         <Route path="/tutor/students/:id/history" element={<HistoryPage />} />
