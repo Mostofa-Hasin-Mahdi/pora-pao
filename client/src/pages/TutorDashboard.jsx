@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Users, UserPlus, LogOut, Copy, Check } from 'lucide-react';
+import { Users, UserPlus, LogOut, Copy, Check, Trash2, Edit2 } from 'lucide-react';
 
 export default function TutorDashboard() {
     const navigate = useNavigate();
@@ -13,6 +13,8 @@ export default function TutorDashboard() {
     const [newStudentName, setNewStudentName] = useState('');
     const [addingStudent, setAddingStudent] = useState(false);
     const [copiedId, setCopiedId] = useState(null);
+    const [editingId, setEditingId] = useState(null);
+    const [editName, setEditName] = useState('');
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
@@ -90,6 +92,34 @@ export default function TutorDashboard() {
         await supabase.auth.signOut();
     };
 
+    const handleDeleteStudent = async (studentId) => {
+        if (!window.confirm("Are you sure you want to completely delete this student? This action cannot be undone.")) return;
+        try {
+            // Delete related rows first to satisfy foreign key constraints
+            await supabase.from('tuition_schedules').delete().eq('student_id', studentId);
+            await supabase.from('homeworks').delete().eq('student_id', studentId);
+            await supabase.from('quizzes').delete().eq('student_id', studentId);
+
+            const { error } = await supabase.from('students').delete().eq('id', studentId);
+            if (error) throw error;
+            fetchStudents(session.user.id);
+        } catch (err) {
+            alert('Failed to delete student: ' + err.message);
+        }
+    };
+
+    const handleUpdateStudent = async (studentId) => {
+        if (!editName.trim()) return;
+        try {
+            const { error } = await supabase.from('students').update({ name: editName }).eq('id', studentId);
+            if (error) throw error;
+            setEditingId(null);
+            fetchStudents(session.user.id);
+        } catch (err) {
+            alert('Failed to update student: ' + err.message);
+        }
+    };
+
     if (loading) {
         return <div className="mobile-container"><p style={{ textAlign: 'center', marginTop: '40px' }}>Loading Dashboard...</p></div>;
     }
@@ -141,12 +171,34 @@ export default function TutorDashboard() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingBottom: '80px' }}>
                     {students.map(student => (
                         <div key={student.id} className="glass-panel" style={{ padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <div
-                                style={{ cursor: 'pointer', flex: 1 }}
-                                onClick={() => navigate(`/tutor/students/${student.id}`)}
-                            >
-                                <h4 style={{ fontSize: '18px', margin: '0 0 4px 0', color: 'var(--c-text-primary)' }}>{student.name}</h4>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <div style={{ flex: 1, marginRight: '16px' }}>
+                                {editingId === student.id ? (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                                        <input
+                                            type="text"
+                                            value={editName}
+                                            onChange={(e) => setEditName(e.target.value)}
+                                            className="glass-input"
+                                            style={{ padding: '8px', width: '100%', fontSize: '14px' }}
+                                            autoFocus
+                                        />
+                                        <button onClick={() => handleUpdateStudent(student.id)} style={{ background: 'var(--c-accent-1)', border: 'none', borderRadius: '4px', padding: '8px', color: 'white', cursor: 'pointer' }}>
+                                            <Check size={16} />
+                                        </button>
+                                        <button onClick={() => setEditingId(null)} style={{ background: '#333', border: 'none', borderRadius: '4px', padding: '8px', color: 'white', cursor: 'pointer' }}>
+                                            X
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <h4
+                                        style={{ fontSize: '18px', margin: '0 0 4px 0', color: 'var(--c-text-primary)', cursor: 'pointer' }}
+                                        onClick={() => navigate(`/tutor/students/${student.id}`)}
+                                    >
+                                        {student.name}
+                                    </h4>
+                                )}
+
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }} onClick={() => navigate(`/tutor/students/${student.id}`)}>
                                     <span style={{ fontSize: '12px', color: 'var(--c-text-secondary)' }}>Login Code:</span>
                                     <span style={{
                                         fontFamily: 'monospace',
@@ -161,24 +213,30 @@ export default function TutorDashboard() {
                                     </span>
                                 </div>
                             </div>
-                            <button
-                                onClick={(e) => { e.stopPropagation(); handleCopyCode(student.unique_code, student.id); }}
-                                style={{
-                                    background: 'rgba(255,255,255,0.1)',
-                                    border: 'none',
-                                    borderRadius: '50%',
-                                    width: '40px',
-                                    height: '40px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    cursor: 'pointer',
-                                    color: copiedId === student.id ? '#4caf50' : 'var(--c-text-primary)',
-                                    transition: 'all 0.2s'
-                                }}
-                            >
-                                {copiedId === student.id ? <Check size={18} /> : <Copy size={18} />}
-                            </button>
+
+                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexShrink: 0 }}>
+                                <button
+                                    onClick={() => handleCopyCode(student.unique_code, student.id)}
+                                    style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: copiedId === student.id ? '#4caf50' : 'var(--c-text-primary)' }}
+                                    title="Copy Login Code"
+                                >
+                                    {copiedId === student.id ? <Check size={16} /> : <Copy size={16} />}
+                                </button>
+                                <button
+                                    onClick={() => { setEditingId(student.id); setEditName(student.name); }}
+                                    style={{ background: 'rgba(255,179,71,0.1)', border: 'none', borderRadius: '50%', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#ffb347' }}
+                                    title="Edit Student Name"
+                                >
+                                    <Edit2 size={16} />
+                                </button>
+                                <button
+                                    onClick={() => handleDeleteStudent(student.id)}
+                                    style={{ background: 'rgba(255,107,107,0.1)', border: 'none', borderRadius: '50%', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#ff6b6b' }}
+                                    title="Delete Student"
+                                >
+                                    <Trash2 size={16} />
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>
