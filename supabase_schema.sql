@@ -91,7 +91,11 @@ CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger AS $$
 BEGIN
   INSERT INTO public.tutors (id, name, phone_number)
-  VALUES (new.id, '', '');
+  VALUES (
+    new.id, 
+    COALESCE(new.raw_user_meta_data->>'name', ''), 
+    COALESCE(new.raw_user_meta_data->>'phone_number', '')
+  );
   RETURN new;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;

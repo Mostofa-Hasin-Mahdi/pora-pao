@@ -32,22 +32,15 @@ export default function TutorLogin() {
                 // Sign UP
                 const { data: authData, error: signUpError } = await supabase.auth.signUp({
                     email,
-                    password
+                    password,
+                    options: {
+                        data: {
+                            name: name,
+                            phone_number: phone
+                        }
+                    }
                 });
                 if (signUpError) throw signUpError;
-
-                if (authData.user) {
-                    // Wait briefly for the trigger to execute
-                    await new Promise(resolve => setTimeout(resolve, 500));
-
-                    // Update the auto-generated public.tutors row with the inputted name/phone
-                    const { error: updateError } = await supabase
-                        .from('tutors')
-                        .update({ name, phone_number: phone })
-                        .eq('id', authData.user.id);
-
-                    if (updateError) throw updateError;
-                }
 
                 alert('Signup successful! Check your email to verify if required, or simply log in.');
                 setIsLogin(true);
