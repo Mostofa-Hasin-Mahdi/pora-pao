@@ -13,6 +13,7 @@ CREATE TABLE public.tutors (
 ALTER TABLE public.tutors ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Tutors can read their own profile" ON public.tutors FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "Tutors can update their own profile" ON public.tutors FOR UPDATE USING (auth.uid() = id);
+CREATE POLICY "Public read for tutor profiles" ON public.tutors FOR SELECT USING (true);
 
 -- 2. Create Students table
 -- We generate a unique access code automatically upon insertion

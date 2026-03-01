@@ -214,6 +214,12 @@ export default function TutorStudentDetail() {
                     </div>
                 </>
             )}
+            {/* Performance Link */}
+            <div style={{ paddingBottom: '40px', textAlign: 'center' }}>
+                <button className="glass-button" onClick={() => navigate(`/tutor/students/${id}/performance`)}>
+                    View Student Analytics
+                </button>
+            </div>
         </div>
     );
 }

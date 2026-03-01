@@ -5,6 +5,8 @@ import TutorLogin from './pages/TutorLogin';
 import StudentLogin from './pages/StudentLogin';
 import TutorDashboard from './pages/TutorDashboard';
 import TutorStudentDetail from './pages/TutorStudentDetail';
+import StudentDashboard from './pages/StudentDashboard';
+import Performance from './pages/Performance';
 
 function LandingPage() {
   return (
@@ -61,10 +63,13 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login/tutor" element={<TutorLogin />} />
         <Route path="/login/student" element={<StudentLogin />} />
-        {/* Placeholder dashboard routes for now */}
+        {/* Tutor Routes */}
         <Route path="/tutor/dashboard" element={<TutorDashboard />} />
         <Route path="/tutor/students/:id" element={<TutorStudentDetail />} />
-        <Route path="/student/dashboard" element={<div className="mobile-container"><h2 style={{ color: 'white' }}>Student Dashboard</h2></div>} />
+        <Route path="/tutor/students/:id/performance" element={<Performance />} />
+        {/* Student Routes */}
+        <Route path="/student/dashboard" element={<StudentDashboard />} />
+        <Route path="/student/performance" element={<Performance />} />
       </Routes>
     </BrowserRouter>
   );
