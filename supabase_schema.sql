@@ -1,5 +1,3 @@
--- Phase 1: Database Setup for Pora Pao
--- This will create the required tables and Row Level Security (RLS) policies.
 
 -- 1. Create Tutors table
 CREATE TABLE public.tutors (
