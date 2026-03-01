@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { ArrowLeft, Calendar, Book, PenTool, Clock } from 'lucide-react';
+import MiniCalendar from '../components/MiniCalendar';
 
 export default function TutorStudentDetail() {
     const { id } = useParams();
@@ -20,6 +21,7 @@ export default function TutorStudentDetail() {
     const [daysPerWeek, setDaysPerWeek] = useState(1);
     const [scheduledTime, setScheduledTime] = useState('');
     const [rescheduleDate, setRescheduleDate] = useState('');
+    const [routineDays, setRoutineDays] = useState([]);
 
     // Quick Actions State
     const [newSubject, setNewSubject] = useState('');
@@ -58,6 +60,7 @@ export default function TutorStudentDetail() {
                 setDaysPerWeek(schedData.days_per_week);
                 setScheduledTime(schedData.scheduled_time || '');
                 setRescheduleDate(schedData.rescheduled_date || '');
+                setRoutineDays(schedData.routine_days || []);
             }
 
             // 4. Fetch Pending Homework and Quizzes
@@ -78,19 +81,23 @@ export default function TutorStudentDetail() {
         e.preventDefault();
         try {
             if (schedule) {
-                await supabase.from('tuition_schedules').update({
+                const { error } = await supabase.from('tuition_schedules').update({
                     days_per_week: daysPerWeek,
                     scheduled_time: scheduledTime || null,
-                    rescheduled_date: rescheduleDate || null
+                    rescheduled_date: rescheduleDate || null,
+                    routine_days: routineDays
                 }).eq('id', schedule.id);
+                if (error) throw error;
             } else {
-                await supabase.from('tuition_schedules').insert({
+                const { error } = await supabase.from('tuition_schedules').insert({
                     tutor_id: session.user.id,
                     student_id: id,
                     days_per_week: daysPerWeek,
                     scheduled_time: scheduledTime || null,
-                    rescheduled_date: rescheduleDate || null
+                    rescheduled_date: rescheduleDate || null,
+                    routine_days: routineDays
                 });
+                if (error) throw error;
             }
             alert('Schedule updated!');
             fetchData(session.user.id);
@@ -103,10 +110,11 @@ export default function TutorStudentDetail() {
         e.preventDefault();
         if (!newSubject) return;
         try {
-            await supabase.from('subjects').insert({
+            const { error } = await supabase.from('subjects').insert({
                 name: newSubject,
                 tutor_id: session.user.id
             });
+            if (error) throw error;
             setNewSubject('');
             fetchData(session.user.id);
         } catch (err) {
@@ -118,12 +126,13 @@ export default function TutorStudentDetail() {
         e.preventDefault();
         if (!selectedSubjectHw || !hwDesc) return;
         try {
-            await supabase.from('homeworks').insert({
+            const { error } = await supabase.from('homeworks').insert({
                 subject_id: selectedSubjectHw,
                 student_id: id,
                 description: hwDesc,
                 status: 'pending'
             });
+            if (error) throw error;
             setHwDesc('');
             alert('Homework assigned!');
         } catch (err) {
@@ -135,12 +144,13 @@ export default function TutorStudentDetail() {
         e.preventDefault();
         if (!selectedSubjectQuiz || !quizSyllabus || !quizTotalMarks) return;
         try {
-            await supabase.from('quizzes').insert({
+            const { error } = await supabase.from('quizzes').insert({
                 subject_id: selectedSubjectQuiz,
                 student_id: id,
                 syllabus: quizSyllabus,
                 total_marks: parseInt(quizTotalMarks, 10)
             });
+            if (error) throw error;
             setQuizSyllabus('');
             setQuizTotalMarks('100');
             alert('Quiz alert sent!');
@@ -152,7 +162,8 @@ export default function TutorStudentDetail() {
 
     const handleGradeHw = async (hwId, status) => {
         try {
-            await supabase.from('homeworks').update({ status }).eq('id', hwId);
+            const { error } = await supabase.from('homeworks').update({ status }).eq('id', hwId);
+            if (error) throw error;
             fetchData(session.user.id);
         } catch (err) {
             alert(err.message);
@@ -163,7 +174,8 @@ export default function TutorStudentDetail() {
         const total = quiz.total_marks || 100;
         if (score === '' || score < 0 || score > total) return alert(`Enter valid marks (0-${total})`);
         try {
-            await supabase.from('quizzes').update({ marks_obtained: parseInt(score, 10) }).eq('id', quiz.id);
+            const { error } = await supabase.from('quizzes').update({ marks_obtained: parseInt(score, 10) }).eq('id', quiz.id);
+            if (error) throw error;
             fetchData(session.user.id);
         } catch (err) {
             alert(err.message);
@@ -199,8 +211,37 @@ export default function TutorStudentDetail() {
                         <label style={{ fontSize: '14px', color: 'var(--c-text-secondary)', marginBottom: '4px', display: 'block' }}>Reschedule Next Day (Alerts Student)</label>
                         <input type="date" className="glass-input" value={rescheduleDate} onChange={(e) => setRescheduleDate(e.target.value)} />
                     </div>
+
+                    <div style={{ marginTop: '8px' }}>
+                        <label style={{ fontSize: '14px', color: 'var(--c-text-secondary)', marginBottom: '8px', display: 'block' }}>Select Teaching Routine Days</label>
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, idx) => (
+                                <button
+                                    key={day}
+                                    type="button"
+                                    onClick={() => setRoutineDays(prev => prev.includes(idx) ? prev.filter(d => d !== idx) : [...prev, idx])}
+                                    style={{
+                                        padding: '6px 12px',
+                                        borderRadius: '20px',
+                                        border: '1px solid var(--c-accent-1)',
+                                        background: routineDays.includes(idx) ? 'var(--c-accent-1)' : 'transparent',
+                                        color: routineDays.includes(idx) ? '#fff' : 'var(--c-text-primary)',
+                                        cursor: 'pointer',
+                                        fontSize: '12px'
+                                    }}
+                                >
+                                    {day}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
                     <button type="submit" className="glass-button" style={{ marginTop: '8px' }}>Save Schedule</button>
                 </form>
+
+                {routineDays.length > 0 && (
+                    <MiniCalendar routineDays={routineDays} rescheduledDate={rescheduleDate} />
+                )}
             </div>
 
             {/* Subject Management (Global for Tutor but accessible here) */}

@@ -53,6 +53,7 @@ CREATE TABLE public.tuition_schedules (
   days_per_week integer DEFAULT 1,
   scheduled_time time without time zone,
   rescheduled_date date,
+  routine_days jsonb DEFAULT '[]'::jsonb,
   created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 ALTER TABLE public.tuition_schedules ENABLE ROW LEVEL SECURITY;

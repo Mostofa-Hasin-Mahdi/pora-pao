@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { BookOpen, Calendar, Clock, LogOut, Bell, User, Edit3 } from 'lucide-react';
+import MiniCalendar from '../components/MiniCalendar';
 
 export default function StudentDashboard() {
     const navigate = useNavigate();
@@ -147,6 +148,10 @@ export default function StudentDashboard() {
                     </div>
                 ) : (
                     <p style={{ color: 'var(--c-text-secondary)', fontSize: '14px' }}>No schedule set yet.</p>
+                )}
+
+                {schedule && schedule.routine_days && schedule.routine_days.length > 0 && (
+                    <MiniCalendar routineDays={schedule.routine_days} rescheduledDate={schedule.rescheduled_date} />
                 )}
             </div>
 
