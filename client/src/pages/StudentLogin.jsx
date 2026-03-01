@@ -41,38 +41,47 @@ export default function StudentLogin() {
     };
 
     return (
-        <div className="mobile-container">
-            <Link to="/" style={{ color: 'var(--c-text-primary)' }}>
-                <ArrowLeft size={24} style={{ marginBottom: '20px' }} />
-            </Link>
+        <div className="mobile-container" style={{ display: 'flex', flexDirection: 'column', padding: '16px' }}>
+            <div className="glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
+                    <Link to="/" style={{ color: 'var(--c-text-primary)' }}>
+                        <ArrowLeft size={24} />
+                    </Link>
+                    <div style={{ flex: 1, textAlign: 'center', paddingRight: '24px' }}>
+                        <h1 style={{ fontSize: '32px', margin: 0, textShadow: '0 0 20px rgba(0, 168, 232, 0.4)' }}>
+                            Pora<span style={{ color: 'var(--c-accent-1)' }}>Pao</span>
+                        </h1>
+                    </div>
+                </div>
 
-            <div className="glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '8px', fontSize: '28px' }}>
-                    Student Access
-                </h2>
-                <p style={{ textAlign: 'center', color: 'var(--c-text-secondary)', marginBottom: '32px' }}>
-                    Enter the unique 6-character code provided by your tutor.
-                </p>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <h2 style={{ textAlign: 'center', marginBottom: '8px', fontSize: '28px' }}>
+                        Student Access
+                    </h2>
+                    <p style={{ textAlign: 'center', color: 'var(--c-text-secondary)', marginBottom: '32px' }}>
+                        Enter the unique 6-character code provided by your tutor.
+                    </p>
 
-                <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <input
-                        type="text"
-                        placeholder="Unique Code (e.g., a1b2c3)"
-                        className="glass-input"
-                        value={uniqueCode}
-                        onChange={(e) => setUniqueCode(e.target.value)}
-                        style={{ textAlign: 'center', letterSpacing: '2px', fontSize: '20px', textTransform: 'lowercase' }}
-                        maxLength={6}
-                        required
-                    />
+                    <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        <input
+                            type="text"
+                            placeholder="Unique Code (e.g., a1b2c3)"
+                            className="glass-input"
+                            value={uniqueCode}
+                            onChange={(e) => setUniqueCode(e.target.value)}
+                            style={{ textAlign: 'center', letterSpacing: '2px', fontSize: '20px', textTransform: 'lowercase' }}
+                            maxLength={6}
+                            required
+                        />
 
-                    {error && <p style={{ color: '#ff6b6b', fontSize: '14px', textAlign: 'center' }}>{error}</p>}
+                        {error && <p style={{ color: '#ff6b6b', fontSize: '14px', textAlign: 'center' }}>{error}</p>}
 
-                    <button type="submit" className="glass-button" disabled={loading} style={{ marginTop: '8px' }}>
-                        <KeyRound size={20} />
-                        {loading ? 'Verifying...' : 'Access Dashboard'}
-                    </button>
-                </form>
+                        <button type="submit" className="glass-button" disabled={loading} style={{ marginTop: '8px' }}>
+                            <KeyRound size={20} />
+                            {loading ? 'Verifying...' : 'Access Dashboard'}
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     );

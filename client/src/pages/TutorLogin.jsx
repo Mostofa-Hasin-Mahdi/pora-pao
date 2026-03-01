@@ -53,75 +53,84 @@ export default function TutorLogin() {
     };
 
     return (
-        <div className="mobile-container">
-            <Link to="/" style={{ color: 'var(--c-text-primary)' }}>
-                <ArrowLeft size={24} style={{ marginBottom: '20px' }} />
-            </Link>
+        <div className="mobile-container" style={{ display: 'flex', flexDirection: 'column', padding: '16px' }}>
+            <div className="glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
+                    <Link to="/" style={{ color: 'var(--c-text-primary)' }}>
+                        <ArrowLeft size={24} />
+                    </Link>
+                    <div style={{ flex: 1, textAlign: 'center', paddingRight: '24px' }}>
+                        <h1 style={{ fontSize: '32px', margin: 0, textShadow: '0 0 20px rgba(0, 168, 232, 0.4)' }}>
+                            Pora<span style={{ color: 'var(--c-accent-1)' }}>Pao</span>
+                        </h1>
+                    </div>
+                </div>
 
-            <div className="glass-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '8px', fontSize: '28px' }}>
-                    {isLogin ? 'Welcome Back' : 'Create Account'}
-                </h2>
-                <p style={{ textAlign: 'center', color: 'var(--c-text-secondary)', marginBottom: '32px' }}>
-                    {isLogin ? 'Login to your tutor dashboard.' : 'Sign up to manage your tuitions.'}
-                </p>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <h2 style={{ textAlign: 'center', marginBottom: '8px', fontSize: '28px' }}>
+                        {isLogin ? 'Welcome Back' : 'Create Account'}
+                    </h2>
+                    <p style={{ textAlign: 'center', color: 'var(--c-text-secondary)', marginBottom: '32px' }}>
+                        {isLogin ? 'Login to your tutor dashboard.' : 'Sign up to manage your tuitions.'}
+                    </p>
 
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    {!isLogin && (
-                        <>
-                            <input
-                                type="text"
-                                placeholder="Full Name"
-                                className="glass-input"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                required
-                            />
-                            <input
-                                type="tel"
-                                placeholder="Phone Number"
-                                className="glass-input"
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                                required
-                            />
-                        </>
-                    )}
+                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        {!isLogin && (
+                            <>
+                                <input
+                                    type="text"
+                                    placeholder="Full Name"
+                                    className="glass-input"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    required
+                                />
+                                <input
+                                    type="tel"
+                                    placeholder="Phone Number"
+                                    className="glass-input"
+                                    value={phone}
+                                    onChange={(e) => setPhone(e.target.value)}
+                                    required
+                                />
+                            </>
+                        )}
 
-                    <input
-                        type="email"
-                        placeholder="Email Address"
-                        className="glass-input"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        className="glass-input"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+                        <input
+                            type="email"
+                            placeholder="Email Address"
+                            className="glass-input"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            className="glass-input"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
 
-                    {error && <p style={{ color: '#ff6b6b', fontSize: '14px', textAlign: 'center' }}>{error}</p>}
+                        {error && <p style={{ color: '#ff6b6b', fontSize: '14px', textAlign: 'center' }}>{error}</p>}
 
-                    <button type="submit" className="glass-button" disabled={loading} style={{ marginTop: '8px' }}>
-                        <LogIn size={20} />
-                        {loading ? 'Processing...' : isLogin ? 'Login' : 'Sign Up'}
-                    </button>
-                </form>
+                        <button type="submit" className="glass-button" disabled={loading} style={{ marginTop: '8px' }}>
+                            <LogIn size={20} />
+                            {loading ? 'Processing...' : isLogin ? 'Login' : 'Sign Up'}
+                        </button>
+                    </form>
 
-                <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '14px', color: 'var(--c-text-secondary)' }}>
-                    {isLogin ? "Don't have an account? " : "Already have an account? "}
-                    <span
-                        onClick={() => { setIsLogin(!isLogin); setError(null); }}
-                        style={{ color: 'var(--c-accent-1)', fontWeight: '600', cursor: 'pointer' }}
-                    >
-                        {isLogin ? 'Sign up here' : 'Login here'}
-                    </span>
-                </p>
+                    <p style={{ textAlign: 'center', marginTop: '24px', fontSize: '14px', color: 'var(--c-text-secondary)' }}>
+                        {isLogin ? "Don't have an account? " : "Already have an account? "}
+                        <span
+                            onClick={() => { setIsLogin(!isLogin); setError(null); }}
+                            style={{ color: 'var(--c-accent-1)', fontWeight: '600', cursor: 'pointer' }}
+                        >
+                            {isLogin ? 'Sign up here' : 'Login here'}
+                        </span>
+                    </p>
+                </div>
             </div>
         </div>
     );
