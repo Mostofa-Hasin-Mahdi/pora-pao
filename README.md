@@ -1,4 +1,4 @@
-# 🎯 Pora Pao - Smart Tutor Dashboard
+# 🖋️ Pora Pao - Smart Tutor Dashboard
 <img width="1529" height="430" alt="image" src="https://github.com/user-attachments/assets/cf1da77a-2d1a-44ed-9fe2-419123c1fa98" />
 
 A modern, mobile-first, completely serverless web application built with React, Vite, and Supabase that connects private tutors with their students through an intuitive platform.
