@@ -6,22 +6,22 @@
   --c-brand-2: #004D74;
   --c-accent-1: #006494;
   --c-accent-2: #006DA4;
-  
+
   --c-text-primary: #ffffff;
   --c-text-secondary: rgba(255, 255, 255, 0.7);
-  
+
   /* Glassmorphism Variables */
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-highlight: rgba(255, 255, 255, 0.15);
   --glass-blur: blur(16px);
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-  
+
   --radius-sm: 12px;
   --radius-md: 20px;
   --radius-lg: 32px;
   --radius-pill: 9999px;
-  
+
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -35,7 +35,7 @@
 body {
   font-family: 'Inter', sans-serif;
   background-color: var(--c-dark-1);
-  background-image: 
+  background-image:
     radial-gradient(circle at 10% 20%, var(--c-brand-1) 0%, transparent 40%),
     radial-gradient(circle at 90% 80%, var(--c-dark-2) 0%, transparent 40%);
   background-attachment: fixed;
@@ -46,7 +46,12 @@ body {
   line-height: 1.5;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Outfit', sans-serif;
   letter-spacing: -0.02em;
 }
@@ -92,7 +97,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: 14px 28px;
   font-size: 16px;
   font-weight: 600;
-  font- परिवार: 'Inter', sans-serif; /* using font-family */
+  font-family: 'Inter', sans-serif;
   box-shadow: 0 4px 15px rgba(0, 100, 148, 0.4);
   cursor: pointer;
   transition: all var(--transition-fast);

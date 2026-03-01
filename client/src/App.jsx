@@ -1,6 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { BookOpen, GraduationCap, ChevronRight } from 'lucide-react';
+import TutorLogin from './pages/TutorLogin';
+import StudentLogin from './pages/StudentLogin';
+import TutorDashboard from './pages/TutorDashboard';
 
 function LandingPage() {
   return (
@@ -21,7 +24,7 @@ function LandingPage() {
               <GraduationCap size={32} color="var(--c-accent-1)" />
             </div>
             <div style={{ flex: 1 }}>
-              <h3 style={{ marginBottom: '4px', fontSize: '20px' }}>I am a Tutor</h3>
+              <h3 style={{ marginBottom: '4px', fontSize: '20px', color: 'var(--c-text-primary)' }}>I am a Tutor</h3>
               <p style={{ color: 'var(--c-text-secondary)', fontSize: '14px' }}>Log in to manage your students.</p>
             </div>
             <ChevronRight color="var(--c-text-secondary)" />
@@ -30,10 +33,10 @@ function LandingPage() {
         <Link to="/login/student" style={{ textDecoration: 'none' }}>
           <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <div style={{ background: 'var(--glass-highlight)', padding: '16px', borderRadius: '50%' }}>
-              <BookOpen size={32} color="#004D74" />
+              <BookOpen size={32} color="var(--c-accent-1)" />
             </div>
             <div style={{ flex: 1 }}>
-              <h3 style={{ marginBottom: '4px', fontSize: '20px' }}>I am a Student</h3>
+              <h3 style={{ marginBottom: '4px', fontSize: '20px', color: 'var(--c-text-primary)' }}>I am a Student</h3>
               <p style={{ color: 'var(--c-text-secondary)', fontSize: '14px' }}>Log in with your unique code.</p>
             </div>
             <ChevronRight color="var(--c-text-secondary)" />
@@ -55,6 +58,11 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/login/tutor" element={<TutorLogin />} />
+        <Route path="/login/student" element={<StudentLogin />} />
+        {/* Placeholder dashboard routes for now */}
+        <Route path="/tutor/dashboard" element={<TutorDashboard />} />
+        <Route path="/student/dashboard" element={<div className="mobile-container"><h2 style={{ color: 'white' }}>Student Dashboard</h2></div>} />
       </Routes>
     </BrowserRouter>
   );
