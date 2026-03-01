@@ -57,24 +57,30 @@ export default function Performance() {
             // 1. Radar Data (Average quiz marks per subject)
             const subScores = {};
             quizzes?.forEach(q => {
-                if (!subScores[q.subject_id]) subScores[q.subject_id] = { total: 0, count: 0 };
-                subScores[q.subject_id].total += q.marks_obtained || 0;
+                if (!subScores[q.subject_id]) subScores[q.subject_id] = { totalPercentage: 0, count: 0 };
+                const total = q.total_marks || 100;
+                const obtained = q.marks_obtained || 0;
+                subScores[q.subject_id].totalPercentage += (obtained / total) * 100;
                 subScores[q.subject_id].count += 1;
             });
 
             const rData = Object.keys(subScores).map(subId => ({
                 subject: subMap[subId] ? subMap[subId].substring(0, 3).toUpperCase() : 'UNK',
-                score: subScores[subId].total / subScores[subId].count,
+                score: Math.round(subScores[subId].totalPercentage / subScores[subId].count),
                 fullMark: 100
             }));
             setRadarData(rData.length ? rData : [{ subject: 'N/A', score: 0, fullMark: 100 }]);
 
             // 2. Quiz Line Chart (Timeline of all quizzes)
-            const qData = quizzes?.map((q, idx) => ({
-                quizNum: `Q${idx + 1}`,
-                score: q.marks_obtained || 0,
-                subject: subMap[q.subject_id] || 'Unknown'
-            })) || [];
+            const qData = quizzes?.map((q, idx) => {
+                const total = q.total_marks || 100;
+                const obtained = q.marks_obtained || 0;
+                return {
+                    quizNum: `Q${idx + 1}`,
+                    score: Math.round((obtained / total) * 100),
+                    subject: subMap[q.subject_id] || 'Unknown'
+                };
+            }) || [];
             setQuizData(qData);
 
             // 3. Daily Homework Performance (Mapping status to numeric)

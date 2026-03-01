@@ -13,6 +13,8 @@ export default function TutorStudentDetail() {
     // Forms and Data
     const [subjects, setSubjects] = useState([]);
     const [schedule, setSchedule] = useState(null);
+    const [pendingHw, setPendingHw] = useState([]);
+    const [pendingQuizzes, setPendingQuizzes] = useState([]);
 
     // Schedule Form State
     const [daysPerWeek, setDaysPerWeek] = useState(1);
@@ -25,6 +27,7 @@ export default function TutorStudentDetail() {
     const [selectedSubjectHw, setSelectedSubjectHw] = useState('');
     const [quizSyllabus, setQuizSyllabus] = useState('');
     const [selectedSubjectQuiz, setSelectedSubjectQuiz] = useState('');
+    const [quizTotalMarks, setQuizTotalMarks] = useState('100');
 
     useEffect(() => {
         supabase.auth.getSession().then(({ data: { session } }) => {
@@ -56,6 +59,13 @@ export default function TutorStudentDetail() {
                 setScheduledTime(schedData.scheduled_time || '');
                 setRescheduleDate(schedData.rescheduled_date || '');
             }
+
+            // 4. Fetch Pending Homework and Quizzes
+            const { data: hwData } = await supabase.from('homeworks').select('*').eq('student_id', id).eq('status', 'pending');
+            setPendingHw(hwData || []);
+
+            const { data: qData } = await supabase.from('quizzes').select('*').eq('student_id', id).is('marks_obtained', null);
+            setPendingQuizzes(qData || []);
 
         } catch (err) {
             console.error(err);
@@ -123,15 +133,38 @@ export default function TutorStudentDetail() {
 
     const handleAssignQuiz = async (e) => {
         e.preventDefault();
-        if (!selectedSubjectQuiz || !quizSyllabus) return;
+        if (!selectedSubjectQuiz || !quizSyllabus || !quizTotalMarks) return;
         try {
             await supabase.from('quizzes').insert({
                 subject_id: selectedSubjectQuiz,
                 student_id: id,
-                syllabus: quizSyllabus
+                syllabus: quizSyllabus,
+                total_marks: parseInt(quizTotalMarks, 10)
             });
             setQuizSyllabus('');
+            setQuizTotalMarks('100');
             alert('Quiz alert sent!');
+            fetchData(session.user.id);
+        } catch (err) {
+            alert(err.message);
+        }
+    };
+
+    const handleGradeHw = async (hwId, status) => {
+        try {
+            await supabase.from('homeworks').update({ status }).eq('id', hwId);
+            fetchData(session.user.id);
+        } catch (err) {
+            alert(err.message);
+        }
+    };
+
+    const handleGradeQuiz = async (quiz, score) => {
+        const total = quiz.total_marks || 100;
+        if (score === '' || score < 0 || score > total) return alert(`Enter valid marks (0-${total})`);
+        try {
+            await supabase.from('quizzes').update({ marks_obtained: parseInt(score, 10) }).eq('id', quiz.id);
+            fetchData(session.user.id);
         } catch (err) {
             alert(err.message);
         }
@@ -202,20 +235,56 @@ export default function TutorStudentDetail() {
                     <h3 style={{ fontSize: '18px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <Clock size={18} color="var(--c-accent-1)" /> Add Quiz Alert
                     </h3>
-                    <div className="glass-panel" style={{ padding: '20px', marginBottom: '40px' }}>
+                    <div className="glass-panel" style={{ padding: '20px', marginBottom: '24px' }}>
                         <form onSubmit={handleAssignQuiz} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                             <select className="glass-input" style={{ appearance: 'none' }} required value={selectedSubjectQuiz} onChange={(e) => setSelectedSubjectQuiz(e.target.value)}>
                                 <option value="">Select Subject</option>
                                 {subjects.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                             </select>
+                            <input type="number" placeholder="Total Marks (e.g. 100)" className="glass-input" required value={quizTotalMarks} onChange={(e) => setQuizTotalMarks(e.target.value)} min="1" />
                             <textarea placeholder="Write quiz syllabus..." className="glass-input" rows="2" required value={quizSyllabus} onChange={(e) => setQuizSyllabus(e.target.value)}></textarea>
                             <button type="submit" className="glass-button">Alert Student</button>
                         </form>
                     </div>
+
+                    {/* Pending Grading Section */}
+                    {(pendingHw.length > 0 || pendingQuizzes.length > 0) && (
+                        <h3 style={{ fontSize: '18px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            Grade Pending Work
+                        </h3>
+                    )}
+
+                    {pendingHw.map(hw => (
+                        <div key={hw.id} className="glass-panel" style={{ padding: '16px', marginBottom: '12px' }}>
+                            <p style={{ margin: '0 0 12px 0', fontSize: '15px' }}><strong>HW:</strong> {hw.description}</p>
+                            <div style={{ display: 'flex', gap: '6px' }}>
+                                <button className="glass-button" style={{ flex: 1, padding: '8px', fontSize: '12px', background: '#4caf50' }} onClick={() => handleGradeHw(hw.id, 'complete')}>Done</button>
+                                <button className="glass-button" style={{ flex: 1, padding: '8px', fontSize: '12px', background: '#ffb347' }} onClick={() => handleGradeHw(hw.id, 'partially_complete')}>Partial</button>
+                                <button className="glass-button" style={{ flex: 1, padding: '8px', fontSize: '12px', background: '#ff6b6b' }} onClick={() => handleGradeHw(hw.id, 'incomplete')}>None</button>
+                            </div>
+                        </div>
+                    ))}
+
+                    {pendingQuizzes.map(quiz => (
+                        <div key={quiz.id} className="glass-panel" style={{ padding: '16px', marginBottom: '24px' }}>
+                            <p style={{ margin: '0 0 12px 0', fontSize: '15px' }}><strong>Quiz:</strong> {quiz.syllabus}</p>
+                            <div style={{ display: 'flex', gap: '8px' }}>
+                                <input type="number" id={`quiz-${quiz.id}`} className="glass-input" placeholder={`Marks / ${quiz.total_marks || 100}`} style={{ flex: 2, padding: '8px' }} max={quiz.total_marks || 100} />
+                                <button className="glass-button" style={{ flex: 1, padding: '8px', fontSize: '14px' }} onClick={(e) => {
+                                    const val = document.getElementById(`quiz-${quiz.id}`).value;
+                                    handleGradeQuiz(quiz, val);
+                                }}>Save</button>
+                            </div>
+                        </div>
+                    ))}
                 </>
             )}
-            {/* Performance Link */}
-            <div style={{ paddingBottom: '40px', textAlign: 'center' }}>
+
+            {/* Links */}
+            <div style={{ paddingBottom: '40px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <button className="glass-button" style={{ background: 'rgba(255, 255, 255, 0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }} onClick={() => navigate(`/tutor/students/${id}/history`)}>
+                    View Graded History
+                </button>
                 <button className="glass-button" onClick={() => navigate(`/tutor/students/${id}/performance`)}>
                     View Student Analytics
                 </button>

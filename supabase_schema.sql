@@ -79,6 +79,7 @@ CREATE TABLE public.quizzes (
   subject_id uuid REFERENCES public.subjects(id) NOT NULL,
   student_id uuid REFERENCES public.students(id) NOT NULL,
   syllabus text NOT NULL,
+  total_marks integer DEFAULT 100,
   marks_obtained integer,
   created_at timestamp with time zone DEFAULT timezone('utc'::text, now()) NOT NULL
 );

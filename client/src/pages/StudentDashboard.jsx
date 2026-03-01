@@ -192,10 +192,13 @@ export default function StudentDashboard() {
                 )}
             </div>
 
-            {/* Performance Link */}
-            <div style={{ paddingBottom: '40px', textAlign: 'center' }}>
+            {/* Links */}
+            <div style={{ paddingBottom: '40px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <button className="glass-button" style={{ background: 'rgba(255, 255, 255, 0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }} onClick={() => navigate('/student/history')}>
+                    View Graded History
+                </button>
                 <button className="glass-button" onClick={() => navigate('/student/performance')}>
-                    View My Performance History
+                    View My Analytics
                 </button>
             </div>
         </div>
