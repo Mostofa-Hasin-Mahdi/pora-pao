@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { ResponsiveContainer, Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, AreaChart, Area } from 'recharts';
+import { ResponsiveContainer, BarChart, Bar, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, AreaChart, Area } from 'recharts';
 import { ArrowLeft, TrendingUp } from 'lucide-react';
 
 export default function Performance() {
@@ -130,23 +130,25 @@ export default function Performance() {
                 </h2>
             </div>
 
-            {/* 1. Radar Chart (Performance Overview) */}
+            {/* 1. Bar Chart (Performance Overview) */}
             <h3 style={{ fontSize: '18px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <TrendingUp size={18} color="var(--c-accent-1)" /> Overall Subject Strength
             </h3>
-            <div className="glass-panel" style={{ padding: '16px', marginBottom: '24px', height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div className="glass-panel" style={{ padding: '16px 16px 16px 0', marginBottom: '24px', height: '250px' }}>
                 {radarData.length > 0 && radarData[0].subject !== 'N/A' ? (
                     <ResponsiveContainer width="100%" height="100%">
-                        <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
-                            <PolarGrid stroke="rgba(255,255,255,0.2)" />
-                            <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--c-text-secondary)', fontSize: 12, fontWeight: 'bold' }} />
-                            <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                            <Radar name="Score" dataKey="score" stroke="var(--c-accent-1)" fill="var(--c-accent-2)" fillOpacity={0.6} />
+                        <BarChart data={radarData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" vertical={false} />
+                            <XAxis dataKey="subject" stroke="var(--c-text-secondary)" tick={{ fontSize: 12 }} />
+                            <YAxis stroke="var(--c-text-secondary)" tick={{ fontSize: 12 }} domain={[0, 100]} />
                             <Tooltip content={<CustomTooltip />} />
-                        </RadarChart>
+                            <Bar dataKey="score" name="Average %" fill="var(--c-accent-1)" radius={[4, 4, 0, 0]} barSize={20} />
+                        </BarChart>
                     </ResponsiveContainer>
                 ) : (
-                    <p style={{ color: 'var(--c-text-secondary)', fontSize: '14px' }}>Not enough graded quizzes yet.</p>
+                    <div style={{ height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', paddingLeft: '16px' }}>
+                        <p style={{ color: 'var(--c-text-secondary)', margin: 0, fontSize: '14px' }}>Not enough graded quizzes yet.</p>
+                    </div>
                 )}
             </div>
 
