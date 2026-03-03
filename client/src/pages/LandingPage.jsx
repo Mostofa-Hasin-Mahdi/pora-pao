@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, GraduationCap, ChevronRight, BarChart2, Calendar, Edit3, ShieldCheck } from 'lucide-react';
+import { BookOpen, GraduationCap, ChevronRight, Calendar, Book, PenTool, UserPlus } from 'lucide-react';
 
 export default function LandingPage() {
     return (
@@ -44,41 +44,49 @@ export default function LandingPage() {
                 </Link>
             </div>
 
-            {/* Features Showcase */}
+            {/* Tutorial Showcase */}
             <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-                <h2 style={{ fontSize: '20px', color: 'white', display: 'inline-block', borderBottom: '2px solid var(--c-accent-1)', paddingBottom: '4px' }}>Why Pora Pao?</h2>
+                <h2 style={{ fontSize: '20px', color: 'white', display: 'inline-block', borderBottom: '2px solid var(--c-accent-1)', paddingBottom: '4px' }}>How to Use Pora Pao</h2>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 <div className="glass-panel" style={{ padding: '20px', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                    <Calendar size={28} color="#ffb347" style={{ flexShrink: 0 }} />
+                    <div style={{ background: 'rgba(0, 168, 232, 0.2)', padding: '12px', borderRadius: '50%', flexShrink: 0 }}>
+                        <UserPlus size={24} color="var(--c-accent-1)" />
+                    </div>
                     <div>
-                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'white' }}>Intuitive Routine Calendars</h4>
-                        <p style={{ margin: 0, fontSize: '14px', color: 'var(--c-text-secondary)', lineHeight: '1.4' }}>Visualize your teaching and studying days seamlessly, complete with automated reschedule alerts.</p>
+                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'white' }}>1. Onboard Students</h4>
+                        <p style={{ margin: 0, fontSize: '14px', color: 'var(--c-text-secondary)', lineHeight: '1.4' }}>Tutors create a student profile to generate a secure, unique 6-digit login code. Share this code with your student!</p>
                     </div>
                 </div>
 
                 <div className="glass-panel" style={{ padding: '20px', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                    <BarChart2 size={28} color="var(--c-accent-1)" style={{ flexShrink: 0 }} />
+                    <div style={{ background: 'rgba(255, 179, 71, 0.15)', padding: '12px', borderRadius: '50%', flexShrink: 0 }}>
+                        <Calendar size={24} color="#ffb347" />
+                    </div>
                     <div>
-                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'white' }}>Advanced Performance Analytics</h4>
-                        <p style={{ margin: 0, fontSize: '14px', color: 'var(--c-text-secondary)', lineHeight: '1.4' }}>Track academic progress instantly through generated student Bar Charts, Area Charts, and Progress Timelines.</p>
+                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'white' }}>2. Set the Routine</h4>
+                        <p style={{ margin: 0, fontSize: '14px', color: 'var(--c-text-secondary)', lineHeight: '1.4' }}>Open the student's profile to set their weekly tuition days. The Mini Calendar keeps both of you synced on schedule changes.</p>
                     </div>
                 </div>
 
                 <div className="glass-panel" style={{ padding: '20px', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                    <Edit3 size={28} color="#4caf50" style={{ flexShrink: 0 }} />
+                    <div style={{ background: 'rgba(156, 39, 176, 0.15)', padding: '12px', borderRadius: '50%', flexShrink: 0 }}>
+                        <Book size={24} color="#9c27b0" />
+                    </div>
                     <div>
-                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'white' }}>Automated Grading System</h4>
-                        <p style={{ margin: 0, fontSize: '14px', color: 'var(--c-text-secondary)', lineHeight: '1.4' }}>Assign and grade homework and quizzes with just a click, automatically generating organized history logs.</p>
+                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'white' }}>3. Manage Subjects</h4>
+                        <p style={{ margin: 0, fontSize: '14px', color: 'var(--c-text-secondary)', lineHeight: '1.4' }}>Add subjects specific to that student. Assign homework or upcoming quizzes directly under these subjects.</p>
                     </div>
                 </div>
 
                 <div className="glass-panel" style={{ padding: '20px', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                    <ShieldCheck size={28} color="#9c27b0" style={{ flexShrink: 0 }} />
+                    <div style={{ background: 'rgba(76, 175, 80, 0.15)', padding: '12px', borderRadius: '50%', flexShrink: 0 }}>
+                        <PenTool size={24} color="#4caf50" />
+                    </div>
                     <div>
-                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'white' }}>Code-Based Security</h4>
-                        <p style={{ margin: 0, fontSize: '14px', color: 'var(--c-text-secondary)', lineHeight: '1.4' }}>No emails required for students! Log in effortlessly through 6-digit cryptographic codes issued by your tutor.</p>
+                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'white' }}>4. Grade & Track</h4>
+                        <p style={{ margin: 0, fontSize: '14px', color: 'var(--c-text-secondary)', lineHeight: '1.4' }}>Grade pending assignments with a single click. Pora Pao automatically graphs this data into visual performance analytics!</p>
                     </div>
                 </div>
             </div>
