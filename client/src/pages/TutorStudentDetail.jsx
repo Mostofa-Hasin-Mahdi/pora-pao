@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { ArrowLeft, Calendar, Book, PenTool, Clock } from 'lucide-react';
+import { ArrowLeft, Calendar, Book, PenTool, Clock, Edit2, Trash2, Check } from 'lucide-react';
 import MiniCalendar from '../components/MiniCalendar';
 
 export default function TutorStudentDetail() {
@@ -16,6 +16,10 @@ export default function TutorStudentDetail() {
     const [schedule, setSchedule] = useState(null);
     const [pendingHw, setPendingHw] = useState([]);
     const [pendingQuizzes, setPendingQuizzes] = useState([]);
+
+    // Manage Subjects State
+    const [editingSubjectId, setEditingSubjectId] = useState(null);
+    const [editSubjectName, setEditSubjectName] = useState('');
 
     // Schedule Form State
     const [daysPerWeek, setDaysPerWeek] = useState(1);
@@ -49,8 +53,8 @@ export default function TutorStudentDetail() {
             const { data: stData } = await supabase.from('students').select('*').eq('id', id).single();
             setStudent(stData);
 
-            // 2. Fetch Subjects (global to tutor)
-            const { data: subData } = await supabase.from('subjects').select('*').eq('tutor_id', tutorId);
+            // 2. Fetch Subjects (specific to this student)
+            const { data: subData } = await supabase.from('subjects').select('*').eq('tutor_id', tutorId).eq('student_id', id);
             setSubjects(subData || []);
 
             // 3. Fetch Schedule for this student
@@ -112,10 +116,39 @@ export default function TutorStudentDetail() {
         try {
             const { error } = await supabase.from('subjects').insert({
                 name: newSubject,
-                tutor_id: session.user.id
+                tutor_id: session.user.id,
+                student_id: id
             });
             if (error) throw error;
             setNewSubject('');
+            fetchData(session.user.id);
+        } catch (err) {
+            alert(err.message);
+        }
+    };
+
+    const handleUpdateSubject = async (subjectId) => {
+        if (!editSubjectName.trim()) return;
+        try {
+            const { error } = await supabase.from('subjects').update({ name: editSubjectName }).eq('id', subjectId);
+            if (error) throw error;
+            setEditingSubjectId(null);
+            fetchData(session.user.id);
+        } catch (err) {
+            alert(err.message);
+        }
+    };
+
+    const handleDeleteSubject = async (subjectId) => {
+        if (!window.confirm("Delete this subject? This will also delete any pending homework and quizzes attached to it.")) return;
+        try {
+            // Must delete foreign key dependencies first
+            await supabase.from('homeworks').delete().eq('subject_id', subjectId);
+            await supabase.from('quizzes').delete().eq('subject_id', subjectId);
+
+            // Delete actual subject
+            const { error } = await supabase.from('subjects').delete().eq('id', subjectId);
+            if (error) throw error;
             fetchData(session.user.id);
         } catch (err) {
             alert(err.message);
@@ -244,15 +277,61 @@ export default function TutorStudentDetail() {
                 )}
             </div>
 
-            {/* Subject Management (Global for Tutor but accessible here) */}
+            {/* Subject Management */}
             <h3 style={{ fontSize: '18px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Book size={18} color="var(--c-accent-1)" /> Add a Subject
+                <Book size={18} color="var(--c-accent-1)" /> Manage Subjects
             </h3>
             <div className="glass-panel" style={{ padding: '20px', marginBottom: '24px' }}>
-                <form onSubmit={handleAddSubject} style={{ display: 'flex', gap: '8px' }}>
+                <form onSubmit={handleAddSubject} style={{ display: 'flex', gap: '8px', marginBottom: subjects.length > 0 ? '16px' : '0' }}>
                     <input type="text" placeholder="e.g. Mathematics" className="glass-input" required value={newSubject} onChange={(e) => setNewSubject(e.target.value)} />
                     <button type="submit" className="glass-button" style={{ width: 'auto' }}>Add</button>
                 </form>
+
+                {subjects.length > 0 && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        {subjects.map(subject => (
+                            <div key={subject.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.05)', padding: '12px', borderRadius: '8px' }}>
+                                {editingSubjectId === subject.id ? (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, marginRight: '12px' }}>
+                                        <input
+                                            type="text"
+                                            value={editSubjectName}
+                                            onChange={(e) => setEditSubjectName(e.target.value)}
+                                            className="glass-input"
+                                            style={{ padding: '8px', width: '100%', fontSize: '14px' }}
+                                            autoFocus
+                                        />
+                                        <button onClick={() => handleUpdateSubject(subject.id)} style={{ background: 'var(--c-accent-1)', border: 'none', borderRadius: '4px', padding: '8px', color: 'white', cursor: 'pointer' }} title="Save">
+                                            <Check size={16} />
+                                        </button>
+                                        <button onClick={() => setEditingSubjectId(null)} style={{ background: '#333', border: 'none', borderRadius: '4px', padding: '8px', color: 'white', cursor: 'pointer' }} title="Cancel">
+                                            X
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <span style={{ fontSize: '15px' }}>{subject.name}</span>
+                                )}
+
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <button
+                                        onClick={() => { setEditingSubjectId(subject.id); setEditSubjectName(subject.name); }}
+                                        style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#ffb347' }}
+                                        title="Edit Subject"
+                                    >
+                                        <Edit2 size={16} />
+                                    </button>
+                                    <button
+                                        onClick={() => handleDeleteSubject(subject.id)}
+                                        style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#ff6b6b' }}
+                                        title="Delete Subject"
+                                    >
+                                        <Trash2 size={16} />
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
 
             {subjects.length > 0 && (
