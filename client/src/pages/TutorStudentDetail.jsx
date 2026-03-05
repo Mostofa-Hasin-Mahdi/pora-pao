@@ -402,7 +402,7 @@ export default function TutorStudentDetail() {
 
             {/* Links */}
             <div style={{ paddingBottom: '40px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <button className="glass-button" style={{ background: 'rgba(255, 255, 255, 0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }} onClick={() => navigate(`/tutor/students/${id}/history`)}>
+                <button className="glass-button" style={{ background: 'var(--glass-bg)', color: 'var(--c-text-primary)', border: '1px solid var(--glass-border)' }} onClick={() => navigate(`/tutor/students/${id}/history`)}>
                     View Graded History
                 </button>
                 <button className="glass-button" onClick={() => navigate(`/tutor/students/${id}/performance`)}>

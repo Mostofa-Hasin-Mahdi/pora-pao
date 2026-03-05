@@ -106,14 +106,14 @@ export default function HistoryPage() {
             <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
                 <button
                     className="glass-button"
-                    style={{ flex: 1, padding: '10px', background: activeTab === 'homework' ? 'rgba(0, 100, 148, 0.4)' : 'rgba(255,255,255,0.05)' }}
+                    style={{ flex: 1, padding: '10px', background: activeTab === 'homework' ? 'rgba(0, 100, 148, 0.4)' : 'transparent', color: activeTab === 'homework' ? '#ffffff' : 'var(--c-text-primary)' }}
                     onClick={() => setActiveTab('homework')}
                 >
                     <Edit3 size={18} /> Homework
                 </button>
                 <button
                     className="glass-button"
-                    style={{ flex: 1, padding: '10px', background: activeTab === 'quizzes' ? 'rgba(0, 100, 148, 0.4)' : 'rgba(255,255,255,0.05)' }}
+                    style={{ flex: 1, padding: '10px', background: activeTab === 'quizzes' ? 'rgba(0, 100, 148, 0.4)' : 'transparent', color: activeTab === 'quizzes' ? '#ffffff' : 'var(--c-text-primary)' }}
                     onClick={() => setActiveTab('quizzes')}
                 >
                     <Clock size={18} /> Quizzes
@@ -137,7 +137,7 @@ export default function HistoryPage() {
                                     </span>
                                 </div>
                                 <p style={{ margin: 0, fontSize: '14px' }}>{hw.description}</p>
-                                <p style={{ margin: '8px 0 0 0', fontSize: '10px', color: 'rgba(255,255,255,0.4)', textAlign: 'right' }}>
+                                <p style={{ margin: '8px 0 0 0', fontSize: '10px', color: 'var(--c-text-primary)', opacity: 0.6, textAlign: 'right' }}>
                                     {new Date(hw.created_at).toLocaleDateString()}
                                 </p>
                             </div>
@@ -157,12 +157,12 @@ export default function HistoryPage() {
                                     <span style={{ fontSize: '12px', color: '#ffb347', fontWeight: 'bold', textTransform: 'uppercase' }}>
                                         {subjectsMap[quiz.subject_id] || 'Subject'}
                                     </span>
-                                    <span style={{ fontSize: '16px', fontWeight: 'bold', color: 'white' }}>
+                                    <span style={{ fontSize: '16px', fontWeight: 'bold', color: 'var(--c-text-primary)' }}>
                                         {quiz.marks_obtained} / {quiz.total_marks || 100}
                                     </span>
                                 </div>
                                 <p style={{ margin: 0, fontSize: '14px', color: 'var(--c-text-secondary)' }}>Syllabus: {quiz.syllabus}</p>
-                                <p style={{ margin: '8px 0 0 0', fontSize: '10px', color: 'rgba(255,255,255,0.4)', textAlign: 'right' }}>
+                                <p style={{ margin: '8px 0 0 0', fontSize: '10px', color: 'var(--c-text-primary)', opacity: 0.6, textAlign: 'right' }}>
                                     {new Date(quiz.created_at).toLocaleDateString()}
                                 </p>
                             </div>

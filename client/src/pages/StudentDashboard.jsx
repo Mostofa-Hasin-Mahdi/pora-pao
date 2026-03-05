@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { BookOpen, Calendar, Clock, LogOut, Bell, User, Edit3 } from 'lucide-react';
 import MiniCalendar from '../components/MiniCalendar';
+import ThemeToggle from '../components/ThemeToggle';
 
 export default function StudentDashboard() {
     const navigate = useNavigate();
@@ -96,12 +97,16 @@ export default function StudentDashboard() {
                     </h2>
                     <p style={{ color: 'var(--c-text-secondary)', fontSize: '14px', margin: 0 }}>Welcome to your dashboard</p>
                 </div>
-                <button
-                    onClick={handleLogout}
-                    style={{ background: 'transparent', border: 'none', color: 'var(--c-text-secondary)', cursor: 'pointer' }}
-                >
-                    <LogOut size={24} />
-                </button>
+                <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                    <ThemeToggle />
+                    <button
+                        onClick={handleLogout}
+                        style={{ background: 'transparent', border: 'none', color: 'var(--c-text-secondary)', cursor: 'pointer' }}
+                        title="Logout"
+                    >
+                        <LogOut size={24} />
+                    </button>
+                </div>
             </header>
 
             {/* Reschedule Alert */}
@@ -112,7 +117,7 @@ export default function StudentDashboard() {
                         <div>
                             <h4 style={{ color: '#ff6b6b', margin: '0 0 4px 0', fontSize: '16px' }}>Tuition Rescheduled!</h4>
                             <p style={{ fontSize: '14px', color: 'var(--c-text-secondary)', margin: 0 }}>
-                                Your tutor rescheduled a session to <strong style={{ color: 'white' }}>{new Date(schedule.rescheduled_date).toLocaleDateString()}</strong>.
+                                Your tutor rescheduled a session to <strong style={{ color: 'var(--c-text-primary)' }}>{new Date(schedule.rescheduled_date).toLocaleDateString()}</strong>.
                             </p>
                         </div>
                     </div>
@@ -199,7 +204,7 @@ export default function StudentDashboard() {
 
             {/* Links */}
             <div style={{ paddingBottom: '40px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <button className="glass-button" style={{ background: 'rgba(255, 255, 255, 0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }} onClick={() => navigate('/student/history')}>
+                <button className="glass-button" style={{ background: 'var(--glass-bg)', color: 'var(--c-text-primary)', border: '1px solid var(--glass-border)' }} onClick={() => navigate('/student/history')}>
                     View Graded History
                 </button>
                 <button className="glass-button" onClick={() => navigate('/student/performance')}>

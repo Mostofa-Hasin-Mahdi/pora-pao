@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Users, UserPlus, LogOut, Copy, Check, Trash2, Edit2, Settings } from 'lucide-react';
+import ThemeToggle from '../components/ThemeToggle';
 
 export default function TutorDashboard() {
     const navigate = useNavigate();
@@ -129,6 +130,7 @@ export default function TutorDashboard() {
             <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                 <h2 style={{ fontSize: '24px', margin: 0 }}>Dashboard</h2>
                 <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                    <ThemeToggle />
                     <button
                         onClick={() => navigate('/tutor/settings')}
                         style={{ background: 'transparent', border: 'none', color: 'var(--c-text-secondary)', cursor: 'pointer' }}

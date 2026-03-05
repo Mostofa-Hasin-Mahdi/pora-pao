@@ -1,10 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpen, GraduationCap, ChevronRight, Calendar, Book, PenTool, UserPlus } from 'lucide-react';
+import ThemeToggle from '../components/ThemeToggle';
 
 export default function LandingPage() {
     return (
-        <div className="mobile-container" style={{ overflowY: 'auto', paddingBottom: '40px' }}>
+        <div className="mobile-container" style={{ overflowY: 'auto', paddingBottom: '40px', position: 'relative' }}>
+            <div style={{ position: 'absolute', top: '24px', right: '24px', zIndex: 10 }}>
+                <ThemeToggle />
+            </div>
             {/* Hero Section */}
             <header style={{ textAlign: 'center', marginBottom: '32px', marginTop: '32px' }}>
                 <h1 style={{ fontSize: '48px', margin: '0 0 12px 0', textShadow: '0 0 20px rgba(0, 168, 232, 0.4)' }}>
@@ -46,7 +50,7 @@ export default function LandingPage() {
 
             {/* Tutorial Showcase */}
             <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-                <h2 style={{ fontSize: '20px', color: 'white', display: 'inline-block', borderBottom: '2px solid var(--c-accent-1)', paddingBottom: '4px' }}>How to Use Pora Pao</h2>
+                <h2 style={{ fontSize: '20px', color: 'var(--c-text-primary)', display: 'inline-block', borderBottom: '2px solid var(--c-accent-1)', paddingBottom: '4px' }}>How to Use Pora Pao</h2>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -55,7 +59,7 @@ export default function LandingPage() {
                         <UserPlus size={24} color="var(--c-accent-1)" />
                     </div>
                     <div>
-                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'white' }}>1. Onboard Students</h4>
+                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'var(--c-text-primary)' }}>1. Onboard Students</h4>
                         <p style={{ margin: 0, fontSize: '14px', color: 'var(--c-text-secondary)', lineHeight: '1.4' }}>Tutors create a student profile to generate a secure, unique 6-digit login code. Share this code with your student!</p>
                     </div>
                 </div>
@@ -65,7 +69,7 @@ export default function LandingPage() {
                         <Calendar size={24} color="#ffb347" />
                     </div>
                     <div>
-                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'white' }}>2. Set the Routine</h4>
+                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'var(--c-text-primary)' }}>2. Set the Routine</h4>
                         <p style={{ margin: 0, fontSize: '14px', color: 'var(--c-text-secondary)', lineHeight: '1.4' }}>Open the student's profile to set their weekly tuition days. The Mini Calendar keeps both of you synced on schedule changes.</p>
                     </div>
                 </div>
@@ -75,7 +79,7 @@ export default function LandingPage() {
                         <Book size={24} color="#9c27b0" />
                     </div>
                     <div>
-                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'white' }}>3. Manage Subjects</h4>
+                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'var(--c-text-primary)' }}>3. Manage Subjects</h4>
                         <p style={{ margin: 0, fontSize: '14px', color: 'var(--c-text-secondary)', lineHeight: '1.4' }}>Add subjects specific to that student. Assign homework or upcoming quizzes directly under these subjects.</p>
                     </div>
                 </div>
@@ -85,7 +89,7 @@ export default function LandingPage() {
                         <PenTool size={24} color="#4caf50" />
                     </div>
                     <div>
-                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'white' }}>4. Grade & Track</h4>
+                        <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'var(--c-text-primary)' }}>4. Grade & Track</h4>
                         <p style={{ margin: 0, fontSize: '14px', color: 'var(--c-text-secondary)', lineHeight: '1.4' }}>Grade pending assignments with a single click. Pora Pao automatically graphs this data into visual performance analytics!</p>
                     </div>
                 </div>

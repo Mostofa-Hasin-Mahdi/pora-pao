@@ -102,7 +102,7 @@ export default function Performance() {
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
             return (
-                <div style={{ background: 'var(--c-dark-1)', border: '1px solid var(--glass-border)', padding: '8px 12px', borderRadius: '8px', color: 'white' }}>
+                <div style={{ background: 'var(--c-dark-1)', border: '1px solid var(--glass-border)', padding: '8px 12px', borderRadius: '8px', color: 'var(--c-text-primary)' }}>
                     <p style={{ margin: '0 0 4px 0', fontSize: '14px', fontWeight: 'bold' }}>{label}</p>
                     {payload.map((entry, index) => (
                         <p key={index} style={{ margin: 0, color: entry.color, fontSize: '14px' }}>
