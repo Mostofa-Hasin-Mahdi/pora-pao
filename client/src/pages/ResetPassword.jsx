@@ -9,27 +9,11 @@ export default function ResetPassword() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
-    const [sessionReady, setSessionReady] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Look for the recovery token in the URL and wait for Supabase to establish the session.
-        const checkSession = async () => {
-            const { data: { session }, error } = await supabase.auth.getSession();
-            if (session) {
-                setSessionReady(true);
-            }
-        };
-
-        checkSession();
-
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-            if (event === 'PASSWORD_RECOVERY' || (event === 'SIGNED_IN' && session)) {
-                setSessionReady(true);
-            }
-        });
-
-        return () => subscription.unsubscribe();
+        // Supabase client automatically processes the URL hash upon load.
+        // We do not need a strict manual wait lock because typing the new password takes several seconds anyway.
     }, []);
 
     const handleUpdate = async (e) => {
@@ -40,10 +24,6 @@ export default function ResetPassword() {
         }
         if (password !== confirmPassword) {
             return setError('Passwords do not match.');
-        }
-
-        if (!sessionReady) {
-            return setError('Authentication session not ready yet. Please ensure you accessed this page from the reset email link.');
         }
 
         setLoading(true);
@@ -106,9 +86,8 @@ export default function ResetPassword() {
                             />
 
                             {error && <p style={{ color: '#ff6b6b', fontSize: '14px', textAlign: 'center', margin: 0 }}>{error}</p>}
-                            {!sessionReady && <p style={{ color: '#ffb347', fontSize: '12px', textAlign: 'center', margin: 0 }}>Waiting for secure session...</p>}
 
-                            <button type="submit" className="glass-button" disabled={loading || !sessionReady} style={{ marginTop: '8px', opacity: sessionReady ? 1 : 0.6 }}>
+                            <button type="submit" className="glass-button" disabled={loading} style={{ marginTop: '8px' }}>
                                 {loading ? 'Updating...' : 'Update Password'}
                             </button>
                         </form>
