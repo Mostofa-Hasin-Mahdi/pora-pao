@@ -11,6 +11,8 @@ import HistoryPage from './pages/HistoryPage';
 import LandingPage from './pages/LandingPage';
 
 import TutorSettings from './pages/TutorSettings';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login/tutor" element={<TutorLogin />} />
           <Route path="/login/student" element={<StudentLogin />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           {/* Tutor Routes */}
           <Route path="/tutor/dashboard" element={<TutorDashboard />} />
           <Route path="/tutor/settings" element={<TutorSettings />} />

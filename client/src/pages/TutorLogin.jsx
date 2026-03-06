@@ -113,6 +113,14 @@ export default function TutorLogin() {
                             required
                         />
 
+                        {isLogin && (
+                            <div style={{ textAlign: 'right', marginTop: '-8px' }}>
+                                <Link to="/forgot-password" style={{ color: 'var(--c-accent-1)', fontSize: '14px', textDecoration: 'none', fontWeight: '500' }}>
+                                    Forgot Password?
+                                </Link>
+                            </div>
+                        )}
+
                         {error && <p style={{ color: '#ff6b6b', fontSize: '14px', textAlign: 'center' }}>{error}</p>}
 
                         <button type="submit" className="glass-button" disabled={loading} style={{ marginTop: '8px' }}>
