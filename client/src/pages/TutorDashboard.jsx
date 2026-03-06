@@ -180,7 +180,7 @@ export default function TutorDashboard() {
                     <p style={{ color: 'var(--c-text-secondary)' }}>You haven't added any students yet.</p>
                 </div>
             ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingBottom: '80px' }}>
+                <div className="responsive-grid" style={{ paddingBottom: '80px' }}>
                     {students.map(student => (
                         <div key={student.id} className="glass-panel" style={{ padding: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <div style={{ flex: 1, marginRight: '16px' }}>

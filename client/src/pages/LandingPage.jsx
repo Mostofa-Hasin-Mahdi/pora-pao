@@ -20,7 +20,7 @@ export default function LandingPage() {
             </header>
 
             {/* Login Links (Primary CTAs) */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '40px' }}>
+            <div className="responsive-grid-2" style={{ marginBottom: '40px' }}>
                 <Link to="/login/tutor" style={{ textDecoration: 'none' }}>
                     <div className="glass-card" style={{ display: 'flex', alignItems: 'center', gap: '16px', cursor: 'pointer', transition: 'transform 0.2s', ':active': { transform: 'scale(0.98)' } }}>
                         <div style={{ background: 'rgba(0, 168, 232, 0.2)', padding: '16px', borderRadius: '50%' }}>
@@ -53,7 +53,7 @@ export default function LandingPage() {
                 <h2 style={{ fontSize: '20px', color: 'var(--c-text-primary)', display: 'inline-block', borderBottom: '2px solid var(--c-accent-1)', paddingBottom: '4px' }}>How to Use Pora Pao</h2>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div className="responsive-grid">
                 <div className="glass-panel" style={{ padding: '20px', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
                     <div style={{ background: 'rgba(0, 168, 232, 0.2)', padding: '12px', borderRadius: '50%', flexShrink: 0 }}>
                         <UserPlus size={24} color="var(--c-accent-1)" />

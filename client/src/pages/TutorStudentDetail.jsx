@@ -226,145 +226,157 @@ export default function TutorStudentDetail() {
                 <h2 style={{ fontSize: '24px', margin: 0 }}>{student.name}</h2>
             </div>
 
-            {/* Schedule Management */}
-            <h3 style={{ fontSize: '18px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Calendar size={18} color="var(--c-accent-1)" /> Set Schedule
-            </h3>
-            <div className="glass-panel" style={{ padding: '20px', marginBottom: '24px' }}>
-                <form onSubmit={handleUpdateSchedule} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    <div>
-                        <label style={{ fontSize: '14px', color: 'var(--c-text-secondary)', marginBottom: '4px', display: 'block' }}>Days per Week</label>
-                        <input type="number" min="1" max="7" className="glass-input" value={daysPerWeek} onChange={(e) => setDaysPerWeek(e.target.value)} />
-                    </div>
-                    <div>
-                        <label style={{ fontSize: '14px', color: 'var(--c-text-secondary)', marginBottom: '4px', display: 'block' }}>Usual Time</label>
-                        <input type="time" className="glass-input" value={scheduledTime} onChange={(e) => setScheduledTime(e.target.value)} />
-                    </div>
-                    <div>
-                        <label style={{ fontSize: '14px', color: 'var(--c-text-secondary)', marginBottom: '4px', display: 'block' }}>Reschedule Next Day (Alerts Student)</label>
-                        <input type="date" className="glass-input" value={rescheduleDate} onChange={(e) => setRescheduleDate(e.target.value)} />
-                    </div>
+            <div className="responsive-grid-2">
+                <div>
+                    {/* Schedule Management */}
+                    <h3 style={{ fontSize: '18px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Calendar size={18} color="var(--c-accent-1)" /> Set Schedule
+                    </h3>
+                    <div className="glass-panel" style={{ padding: '20px', marginBottom: '24px' }}>
+                        <form onSubmit={handleUpdateSchedule} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            <div>
+                                <label style={{ fontSize: '14px', color: 'var(--c-text-secondary)', marginBottom: '4px', display: 'block' }}>Days per Week</label>
+                                <input type="number" min="1" max="7" className="glass-input" value={daysPerWeek} onChange={(e) => setDaysPerWeek(e.target.value)} />
+                            </div>
+                            <div>
+                                <label style={{ fontSize: '14px', color: 'var(--c-text-secondary)', marginBottom: '4px', display: 'block' }}>Usual Time</label>
+                                <input type="time" className="glass-input" value={scheduledTime} onChange={(e) => setScheduledTime(e.target.value)} />
+                            </div>
+                            <div>
+                                <label style={{ fontSize: '14px', color: 'var(--c-text-secondary)', marginBottom: '4px', display: 'block' }}>Reschedule Next Day (Alerts Student)</label>
+                                <input type="date" className="glass-input" value={rescheduleDate} onChange={(e) => setRescheduleDate(e.target.value)} />
+                            </div>
 
-                    <div style={{ marginTop: '8px' }}>
-                        <label style={{ fontSize: '14px', color: 'var(--c-text-secondary)', marginBottom: '8px', display: 'block' }}>Select Teaching Routine Days</label>
-                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, idx) => (
-                                <button
-                                    key={day}
-                                    type="button"
-                                    onClick={() => setRoutineDays(prev => prev.includes(idx) ? prev.filter(d => d !== idx) : [...prev, idx])}
-                                    style={{
-                                        padding: '6px 12px',
-                                        borderRadius: '20px',
-                                        border: '1px solid var(--c-accent-1)',
-                                        background: routineDays.includes(idx) ? 'var(--c-accent-1)' : 'transparent',
-                                        color: routineDays.includes(idx) ? '#fff' : 'var(--c-text-primary)',
-                                        cursor: 'pointer',
-                                        fontSize: '12px'
-                                    }}
-                                >
-                                    {day}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    <button type="submit" className="glass-button" style={{ marginTop: '8px' }}>Save Schedule</button>
-                </form>
-
-                {routineDays.length > 0 && (
-                    <MiniCalendar routineDays={routineDays} rescheduledDate={rescheduleDate} />
-                )}
-            </div>
-
-            {/* Subject Management */}
-            <h3 style={{ fontSize: '18px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Book size={18} color="var(--c-accent-1)" /> Manage Subjects
-            </h3>
-            <div className="glass-panel" style={{ padding: '20px', marginBottom: '24px' }}>
-                <form onSubmit={handleAddSubject} style={{ display: 'flex', gap: '8px', marginBottom: subjects.length > 0 ? '16px' : '0' }}>
-                    <input type="text" placeholder="e.g. Mathematics" className="glass-input" required value={newSubject} onChange={(e) => setNewSubject(e.target.value)} />
-                    <button type="submit" className="glass-button" style={{ width: 'auto' }}>Add</button>
-                </form>
-
-                {subjects.length > 0 && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        {subjects.map(subject => (
-                            <div key={subject.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.05)', padding: '12px', borderRadius: '8px' }}>
-                                {editingSubjectId === subject.id ? (
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, marginRight: '12px' }}>
-                                        <input
-                                            type="text"
-                                            value={editSubjectName}
-                                            onChange={(e) => setEditSubjectName(e.target.value)}
-                                            className="glass-input"
-                                            style={{ padding: '8px', width: '100%', fontSize: '14px' }}
-                                            autoFocus
-                                        />
-                                        <button onClick={() => handleUpdateSubject(subject.id)} style={{ background: 'var(--c-accent-1)', border: 'none', borderRadius: '4px', padding: '8px', color: 'white', cursor: 'pointer' }} title="Save">
-                                            <Check size={16} />
+                            <div style={{ marginTop: '8px' }}>
+                                <label style={{ fontSize: '14px', color: 'var(--c-text-secondary)', marginBottom: '8px', display: 'block' }}>Select Teaching Routine Days</label>
+                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                    {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day, idx) => (
+                                        <button
+                                            key={day}
+                                            type="button"
+                                            onClick={() => setRoutineDays(prev => prev.includes(idx) ? prev.filter(d => d !== idx) : [...prev, idx])}
+                                            style={{
+                                                padding: '6px 12px',
+                                                borderRadius: '20px',
+                                                border: '1px solid var(--c-accent-1)',
+                                                background: routineDays.includes(idx) ? 'var(--c-accent-1)' : 'transparent',
+                                                color: routineDays.includes(idx) ? '#fff' : 'var(--c-text-primary)',
+                                                cursor: 'pointer',
+                                                fontSize: '12px'
+                                            }}
+                                        >
+                                            {day}
                                         </button>
-                                        <button onClick={() => setEditingSubjectId(null)} style={{ background: '#333', border: 'none', borderRadius: '4px', padding: '8px', color: 'white', cursor: 'pointer' }} title="Cancel">
-                                            X
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <span style={{ fontSize: '15px' }}>{subject.name}</span>
-                                )}
-
-                                <div style={{ display: 'flex', gap: '8px' }}>
-                                    <button
-                                        onClick={() => { setEditingSubjectId(subject.id); setEditSubjectName(subject.name); }}
-                                        style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#ffb347' }}
-                                        title="Edit Subject"
-                                    >
-                                        <Edit2 size={16} />
-                                    </button>
-                                    <button
-                                        onClick={() => handleDeleteSubject(subject.id)}
-                                        style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#ff6b6b' }}
-                                        title="Delete Subject"
-                                    >
-                                        <Trash2 size={16} />
-                                    </button>
+                                    ))}
                                 </div>
                             </div>
-                        ))}
+
+                            <button type="submit" className="glass-button" style={{ marginTop: '8px' }}>Save Schedule</button>
+                        </form>
+
+                        {routineDays.length > 0 && (
+                            <MiniCalendar routineDays={routineDays} rescheduledDate={rescheduleDate} />
+                        )}
                     </div>
-                )}
+                </div>
+
+                <div>
+                    {/* Subject Management */}
+                    <h3 style={{ fontSize: '18px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Book size={18} color="var(--c-accent-1)" /> Manage Subjects
+                    </h3>
+                    <div className="glass-panel" style={{ padding: '20px', marginBottom: '24px' }}>
+                        <form onSubmit={handleAddSubject} style={{ display: 'flex', gap: '8px', marginBottom: subjects.length > 0 ? '16px' : '0' }}>
+                            <input type="text" placeholder="e.g. Mathematics" className="glass-input" required value={newSubject} onChange={(e) => setNewSubject(e.target.value)} />
+                            <button type="submit" className="glass-button" style={{ width: 'auto' }}>Add</button>
+                        </form>
+
+                        {subjects.length > 0 && (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                {subjects.map(subject => (
+                                    <div key={subject.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.05)', padding: '12px', borderRadius: '8px' }}>
+                                        {editingSubjectId === subject.id ? (
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, marginRight: '12px' }}>
+                                                <input
+                                                    type="text"
+                                                    value={editSubjectName}
+                                                    onChange={(e) => setEditSubjectName(e.target.value)}
+                                                    className="glass-input"
+                                                    style={{ padding: '8px', width: '100%', fontSize: '14px' }}
+                                                    autoFocus
+                                                />
+                                                <button onClick={() => handleUpdateSubject(subject.id)} style={{ background: 'var(--c-accent-1)', border: 'none', borderRadius: '4px', padding: '8px', color: 'white', cursor: 'pointer' }} title="Save">
+                                                    <Check size={16} />
+                                                </button>
+                                                <button onClick={() => setEditingSubjectId(null)} style={{ background: '#333', border: 'none', borderRadius: '4px', padding: '8px', color: 'white', cursor: 'pointer' }} title="Cancel">
+                                                    X
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <span style={{ fontSize: '15px' }}>{subject.name}</span>
+                                        )}
+
+                                        <div style={{ display: 'flex', gap: '8px' }}>
+                                            <button
+                                                onClick={() => { setEditingSubjectId(subject.id); setEditSubjectName(subject.name); }}
+                                                style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#ffb347' }}
+                                                title="Edit Subject"
+                                            >
+                                                <Edit2 size={16} />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDeleteSubject(subject.id)}
+                                                style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#ff6b6b' }}
+                                                title="Delete Subject"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
             </div>
 
             {subjects.length > 0 && (
                 <>
-                    {/* Homework Assignment */}
-                    <h3 style={{ fontSize: '18px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <PenTool size={18} color="var(--c-accent-1)" /> Assign Homework
-                    </h3>
-                    <div className="glass-panel" style={{ padding: '20px', marginBottom: '24px' }}>
-                        <form onSubmit={handleAssignHW} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                            <select className="glass-input" style={{ appearance: 'none' }} required value={selectedSubjectHw} onChange={(e) => setSelectedSubjectHw(e.target.value)}>
-                                <option value="">Select Subject</option>
-                                {subjects.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
-                            </select>
-                            <textarea placeholder="Write homework details..." className="glass-input" rows="3" required value={hwDesc} onChange={(e) => setHwDesc(e.target.value)}></textarea>
-                            <button type="submit" className="glass-button">Send to Student</button>
-                        </form>
-                    </div>
+                    <div className="responsive-grid-2">
+                        <div>
+                            {/* Homework Assignment */}
+                            <h3 style={{ fontSize: '18px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <PenTool size={18} color="var(--c-accent-1)" /> Assign Homework
+                            </h3>
+                            <div className="glass-panel" style={{ padding: '20px', marginBottom: '24px' }}>
+                                <form onSubmit={handleAssignHW} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    <select className="glass-input" style={{ appearance: 'none' }} required value={selectedSubjectHw} onChange={(e) => setSelectedSubjectHw(e.target.value)}>
+                                        <option value="">Select Subject</option>
+                                        {subjects.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                                    </select>
+                                    <textarea placeholder="Write homework details..." className="glass-input" rows="3" required value={hwDesc} onChange={(e) => setHwDesc(e.target.value)}></textarea>
+                                    <button type="submit" className="glass-button">Send to Student</button>
+                                </form>
+                            </div>
+                        </div>
 
-                    {/* Quiz Alerts */}
-                    <h3 style={{ fontSize: '18px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <Clock size={18} color="var(--c-accent-1)" /> Add Quiz Alert
-                    </h3>
-                    <div className="glass-panel" style={{ padding: '20px', marginBottom: '24px' }}>
-                        <form onSubmit={handleAssignQuiz} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                            <select className="glass-input" style={{ appearance: 'none' }} required value={selectedSubjectQuiz} onChange={(e) => setSelectedSubjectQuiz(e.target.value)}>
-                                <option value="">Select Subject</option>
-                                {subjects.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
-                            </select>
-                            <input type="number" placeholder="Total Marks (e.g. 100)" className="glass-input" required value={quizTotalMarks} onChange={(e) => setQuizTotalMarks(e.target.value)} min="1" />
-                            <textarea placeholder="Write quiz syllabus..." className="glass-input" rows="2" required value={quizSyllabus} onChange={(e) => setQuizSyllabus(e.target.value)}></textarea>
-                            <button type="submit" className="glass-button">Alert Student</button>
-                        </form>
+                        <div>
+                            {/* Quiz Alerts */}
+                            <h3 style={{ fontSize: '18px', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <Clock size={18} color="var(--c-accent-1)" /> Add Quiz Alert
+                            </h3>
+                            <div className="glass-panel" style={{ padding: '20px', marginBottom: '24px' }}>
+                                <form onSubmit={handleAssignQuiz} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    <select className="glass-input" style={{ appearance: 'none' }} required value={selectedSubjectQuiz} onChange={(e) => setSelectedSubjectQuiz(e.target.value)}>
+                                        <option value="">Select Subject</option>
+                                        {subjects.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                                    </select>
+                                    <input type="number" placeholder="Total Marks (e.g. 100)" className="glass-input" required value={quizTotalMarks} onChange={(e) => setQuizTotalMarks(e.target.value)} min="1" />
+                                    <textarea placeholder="Write quiz syllabus..." className="glass-input" rows="2" required value={quizSyllabus} onChange={(e) => setQuizSyllabus(e.target.value)}></textarea>
+                                    <button type="submit" className="glass-button">Alert Student</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Pending Grading Section */}
@@ -374,29 +386,31 @@ export default function TutorStudentDetail() {
                         </h3>
                     )}
 
-                    {pendingHw.map(hw => (
-                        <div key={hw.id} className="glass-panel" style={{ padding: '16px', marginBottom: '12px' }}>
-                            <p style={{ margin: '0 0 12px 0', fontSize: '15px' }}><strong>HW:</strong> {hw.description}</p>
-                            <div style={{ display: 'flex', gap: '6px' }}>
-                                <button className="glass-button" style={{ flex: 1, padding: '8px', fontSize: '12px', background: '#4caf50' }} onClick={() => handleGradeHw(hw.id, 'complete')}>Done</button>
-                                <button className="glass-button" style={{ flex: 1, padding: '8px', fontSize: '12px', background: '#ffb347' }} onClick={() => handleGradeHw(hw.id, 'partially_complete')}>Partial</button>
-                                <button className="glass-button" style={{ flex: 1, padding: '8px', fontSize: '12px', background: '#ff6b6b' }} onClick={() => handleGradeHw(hw.id, 'incomplete')}>None</button>
+                    <div className="responsive-grid">
+                        {pendingHw.map(hw => (
+                            <div key={hw.id} className="glass-panel" style={{ padding: '16px', marginBottom: '12px' }}>
+                                <p style={{ margin: '0 0 12px 0', fontSize: '15px' }}><strong>HW:</strong> {hw.description}</p>
+                                <div style={{ display: 'flex', gap: '6px' }}>
+                                    <button className="glass-button" style={{ flex: 1, padding: '8px', fontSize: '12px', background: '#4caf50' }} onClick={() => handleGradeHw(hw.id, 'complete')}>Done</button>
+                                    <button className="glass-button" style={{ flex: 1, padding: '8px', fontSize: '12px', background: '#ffb347' }} onClick={() => handleGradeHw(hw.id, 'partially_complete')}>Partial</button>
+                                    <button className="glass-button" style={{ flex: 1, padding: '8px', fontSize: '12px', background: '#ff6b6b' }} onClick={() => handleGradeHw(hw.id, 'incomplete')}>None</button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
 
-                    {pendingQuizzes.map(quiz => (
-                        <div key={quiz.id} className="glass-panel" style={{ padding: '16px', marginBottom: '24px' }}>
-                            <p style={{ margin: '0 0 12px 0', fontSize: '15px' }}><strong>Quiz:</strong> {quiz.syllabus}</p>
-                            <div style={{ display: 'flex', gap: '8px' }}>
-                                <input type="number" id={`quiz-${quiz.id}`} className="glass-input" placeholder={`Marks / ${quiz.total_marks || 100}`} style={{ flex: 2, padding: '8px' }} max={quiz.total_marks || 100} />
-                                <button className="glass-button" style={{ flex: 1, padding: '8px', fontSize: '14px' }} onClick={(e) => {
-                                    const val = document.getElementById(`quiz-${quiz.id}`).value;
-                                    handleGradeQuiz(quiz, val);
-                                }}>Save</button>
+                        {pendingQuizzes.map(quiz => (
+                            <div key={quiz.id} className="glass-panel" style={{ padding: '16px', marginBottom: '24px' }}>
+                                <p style={{ margin: '0 0 12px 0', fontSize: '15px' }}><strong>Quiz:</strong> {quiz.syllabus}</p>
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                    <input type="number" id={`quiz-${quiz.id}`} className="glass-input" placeholder={`Marks / ${quiz.total_marks || 100}`} style={{ flex: 2, padding: '8px' }} max={quiz.total_marks || 100} />
+                                    <button className="glass-button" style={{ flex: 1, padding: '8px', fontSize: '14px' }} onClick={(e) => {
+                                        const val = document.getElementById(`quiz-${quiz.id}`).value;
+                                        handleGradeQuiz(quiz, val);
+                                    }}>Save</button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </>
             )}
 
