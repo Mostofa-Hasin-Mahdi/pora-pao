@@ -21,28 +21,26 @@ export default function TutorSettings() {
                 navigate('/login/tutor');
             } else {
                 setSession(session);
-                fetchTutorInfo(session.user.id, session.user.email);
+                fetchTutorInfo(session.user);
             }
         });
     }, [navigate]);
 
-    const fetchTutorInfo = async (tutorId, tutorEmail) => {
+    const fetchTutorInfo = async (user) => {
         try {
             setLoading(true);
-            setEmail(tutorEmail || '');
+            setEmail(user.email || '');
 
             const { data, error } = await supabase
                 .from('tutors')
                 .select('name, phone_number')
-                .eq('id', tutorId)
+                .eq('id', user.id)
                 .single();
 
-            if (error) throw error;
+            if (error && error.code !== 'PGRST116') throw error; // Ignore 0 rows error
 
-            if (data) {
-                setName(data.name || '');
-                setPhoneNumber(data.phone_number || '');
-            }
+            setName(data?.name || user.user_metadata?.name || '');
+            setPhoneNumber(data?.phone_number || user.user_metadata?.phone_number || '');
         } catch (err) {
             console.error('Error fetching tutor info:', err.message);
         } finally {

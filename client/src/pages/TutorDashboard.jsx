@@ -23,6 +23,7 @@ export default function TutorDashboard() {
                 navigate('/login/tutor');
             } else {
                 setSession(session);
+                syncTutorProfile(session.user);
                 fetchStudents(session.user.id);
             }
         });
@@ -37,6 +38,24 @@ export default function TutorDashboard() {
 
         return () => subscription.unsubscribe();
     }, [navigate]);
+
+    const syncTutorProfile = async (user) => {
+        try {
+            const { data, error } = await supabase.from('tutors').select('name, phone_number').eq('id', user.id).single();
+            if (!error && data) {
+                const metaName = user.user_metadata?.name;
+                const metaPhone = user.user_metadata?.phone_number;
+                if ((!data.name && metaName) || (!data.phone_number && metaPhone)) {
+                    await supabase.from('tutors').update({
+                        name: data.name || metaName || '',
+                        phone_number: data.phone_number || metaPhone || ''
+                    }).eq('id', user.id);
+                }
+            }
+        } catch (err) {
+            console.error('Profile sync error:', err.message);
+        }
+    };
 
     const fetchStudents = async (tutorId) => {
         try {

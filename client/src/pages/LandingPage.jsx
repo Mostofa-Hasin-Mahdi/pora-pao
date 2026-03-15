@@ -96,7 +96,7 @@ export default function LandingPage() {
             </div>
 
             <footer style={{ marginTop: '40px', textAlign: 'center' }}>
-                <p style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.3)', margin: 0 }}>©Pora Pao | Mostofa Hasin Mahdi</p>
+                <p style={{ fontSize: '12px', color: 'var(--c-text-secondary)', margin: 0, opacity: 0.6 }}>©Pora Pao | Mostofa Hasin Mahdi</p>
             </footer>
         </div>
     );
